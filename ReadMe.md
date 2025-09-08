@@ -6,9 +6,10 @@ You will need to copy `docker.ts`, `Dockerfile-lambda`, and `tsconfig.lambda.jso
 the root directory of your AdonisJS application.
 
 ## Add scripts to your package.json
-To make it easier I added commands to my `package.json`, one to build the docker image, one to
-run and one to do both.
+To make it easier I added commands to my `package.json`, one to run tsc with the correct tsconfig,
+one to build the docker image, one to run and one to do both.
 ```
+"build:lambda": "npx tsc --project ./tsconfig.lambda.json --noCheck",
 "docker:build": "docker buildx build -f Dockerfile-lambda --platform linux/amd64 --provenance=false -t adonisLambda-sqs:test .",
 "docker:run": "docker run --env-file .env --platform linux/amd64 -p 9000:8080 adonisLambda-sqs:test",
 "docker:all": "pnpm docker:build && pnpm docker:run"
