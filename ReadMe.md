@@ -14,7 +14,7 @@ run and one to do both.
 "docker:all": "pnpm docker:build && pnpm docker:run"
 ```
 
-## Use
+## How to Use
 Simply make sure you pass in the event an object with a property named `args`. These `args` should be
 an array of strings that would be the command arguments. For example if you normally enter in:
 ```shell
