@@ -1,0 +1,16 @@
+FROM public.ecr.aws/lambda/nodejs:20 as builder
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+WORKDIR /usr/app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
+COPY .  ./
+RUN pnpm build:lambda
+
+FROM public.ecr.aws/lambda/nodejs:20
+WORKDIR ${LAMBDA_TASK_ROOT}
+COPY --from=builder /usr/app/buildLambda/. ./
+COPY --from=builder /usr/app/node_modules/. ./node_modules
+COPY --from=builder /usr/app/package.json ./
+CMD ["docker.handler"]
